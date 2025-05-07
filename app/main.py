@@ -16,9 +16,9 @@ def read_root(request: Request):
     return templates.TemplateResponse("home.html", {"request": request})
 
 @app.get("/health")
-def health_check():
+async def health_check():
     return {"status": "ok"}
 
 @app.get("/orders")
-def get_orders():
+async def get_orders():
     return db.query(Order).all()
