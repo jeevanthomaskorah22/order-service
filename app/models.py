@@ -10,4 +10,4 @@ class Order(Base):
     product_id = Column(Integer)
     quantity = Column(Integer)
     status = Column(String, default="pending")
-    created_at = Column(DateTime(timezone=True), server_default=func.now())
+    # created_at = Column(DateTime(timezone=True), server_default=func.now())
