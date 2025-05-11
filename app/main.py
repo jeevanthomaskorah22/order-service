@@ -9,9 +9,9 @@ from app.routes import router
 
 from fastapi import Depends
 from sqlalchemy.orm import Session
-from app.database import get_db  # Import the dependency
+from app.database import get_db  
 from app.models import Order
-from typing import Optional  # Add this at the top
+from typing import Optional  
 
 
 db = SessionLocal()
