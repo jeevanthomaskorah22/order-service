@@ -3,4 +3,6 @@ uvicorn
 sqlalchemy
 psycopg2-binary
 jinja2
-requests   # ✅ Add this line
+requests   
+python-multipart
+

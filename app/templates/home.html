@@ -12,8 +12,9 @@
             color: #333333;
             display: flex;
             justify-content: center;
-            align-items: center;
+            align-items: flex-start;
             height: 100vh;
+            overflow-y: auto;
         }
 
         .container {
@@ -23,12 +24,11 @@
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
             text-align: center;
             max-width: 600px;
+            margin-top: 40px;
         }
 
-        h1 {
+        h1, h3 {
             color: #2b6cb0;
-            font-size: 2.5em;
-            margin-bottom: 10px;
         }
 
         p {
@@ -47,7 +47,8 @@
             margin-top: 30px;
         }
 
-        .links a {
+        .links a,
+        .links button {
             display: inline-block;
             margin: 10px;
             padding: 10px 20px;
@@ -57,10 +58,45 @@
             border-radius: 5px;
             font-size: 16px;
             transition: background-color 0.3s;
+            border: none;
+            cursor: pointer;
         }
 
-        .links a:hover {
+        .links a:hover,
+        .links button:hover {
             background-color: #45a049;
+        }
+
+        form {
+            margin-top: 20px;
+        }
+
+        input {
+            padding: 8px;
+            margin: 5px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        input[type="number"] {
+            width: 80px;
+        }
+
+        .cart-section {
+            margin-top: 40px;
+            text-align: left;
+        }
+
+        .cart-item {
+            background-color: #f9f9f9;
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+        }
+
+        .cart-item form {
+            display: inline;
         }
     </style>
 </head>
@@ -69,10 +105,49 @@
         <h1>Welcome to the Order Service</h1>
         <p>This microservice handles order creation and management in our system.</p>
         <div class="status">Status: Running ✅</div>
+
         <div class="links">
             <a href="/health">Health Check</a>
             <a href="/orders">View Orders</a>
+            <a href="/docs">API Docs</a>
         </div>
+
+        <form action="/cart" method="post">
+            <h3>Add to Cart</h3>
+            <input type="number" name="user_id" placeholder="User ID" required />
+            <input type="number" name="product_id" placeholder="Product ID" required />
+            <input type="number" name="quantity" placeholder="Quantity" required />
+            <button type="submit">Add to Cart</button>
+        </form>
+
+        <form action="/cart" method="get">
+            <h3>View Cart</h3>
+            <input type="number" name="user_id" placeholder="User ID" required />
+            <button type="submit">View Cart</button>
+        </form>
+
+        <form action="/cart/checkout" method="post">
+            <h3>Checkout Cart</h3>
+            <input type="number" name="user_id" placeholder="User ID" required />
+            <button type="submit">Checkout</button>
+        </form>
+
+        {% if cart_items %}
+        <div class="cart-section">
+            <h3>Cart for User ID: {{ user_id }}</h3>
+            {% for item in cart_items %}
+                <div class="cart-item">
+                    <strong>Product ID:</strong> {{ item.product_id }}<br>
+                    <strong>Quantity:</strong> {{ item.quantity }}<br>
+                    <form action="/cart/remove" method="post">
+                        <input type="hidden" name="cart_item_id" value="{{ item.id }}">
+                        <input type="hidden" name="user_id" value="{{ user_id }}">
+                        <button type="submit">Remove</button>
+                    </form>
+                </div>
+            {% endfor %}
+        </div>
+        {% endif %}
     </div>
 </body>
 </html>
